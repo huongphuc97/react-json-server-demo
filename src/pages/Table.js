@@ -15,6 +15,12 @@ const Table = () => {
 
     const [open, setOpen] = useState(false);
 
+    useEffect(() => {
+        axios.get('http://localhost:3000/posts')
+            .then(response => {
+                getTableData(response.data)
+            })
+    }, [])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -23,18 +29,6 @@ const Table = () => {
     const handleClose = () => {
         setOpen(false);
     };
-
-    useEffect(() => {
-        axios.get('http://localhost:3000/posts')
-            .then(response => {
-                getTableData(response.data)
-            })
-    }, [])
-
-    const handleClick = (cellValues) => {
-
-    };
-
     const handleCellClick = (param, event) => {
         event.stopPropagation();
     };
@@ -52,7 +46,7 @@ const Table = () => {
                 return (
                     <div>
                         <Button variant="outlined" onClick={() => {
-                            handleClickOpen(); handleClick(cellValues);
+                            handleClickOpen()
                         }}>
                             Open alert dialog
                         </Button>
