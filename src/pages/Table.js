@@ -13,6 +13,8 @@ const Table = () => {
 
     const [tableData, getTableData] = useState([])
 
+    const [modal, modalData] = useState([])
+
     const [open, setOpen] = useState(false);
 
     useEffect(() => {
@@ -22,9 +24,17 @@ const Table = () => {
             })
     }, [])
 
-    const handleClickOpen = () => {
+    const handleClickOpen = (item) => {
         setOpen(true);
+        modalData(item.row.id)
     };
+
+    const deleteUser = (item) => {
+        axios.delete(`http://localhost:3000/posts/${item}`)
+            .then(response => {
+                alert('User deleted')
+            })
+    }
 
     const handleClose = () => {
         setOpen(false);
@@ -44,32 +54,33 @@ const Table = () => {
         {
             field: 'action', headerName: 'Action', width: 300, renderCell: (cellValues) => {
                 return (
+
                     <div>
                         <Button variant="outlined" onClick={() => {
-                            handleClickOpen()
+                            handleClickOpen(cellValues);
                         }}>
-                            Open alert dialog
+                            Delete user
                         </Button>
                         <Dialog
                             open={open}
                             onClose={handleClose}
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
+
                         >
                             <DialogTitle id="alert-dialog-title">
-                                {"Use Google's location service?"}
+                                Delete
                             </DialogTitle>
                             <DialogContent>
                                 <DialogContentText id="alert-dialog-description">
-                                    Let Google help apps determine location. This means sending anonymous
-                                    location data to Google, even when no apps are running.
+                                    Are you sure ?
                                 </DialogContentText>
                             </DialogContent>
                             <DialogActions>
                                 <Button onClick={handleClose}>Disagree</Button>
-                                <Button onClick={handleClose} autoFocus>
-                                    Agree
-                                </Button>
+                                <Button onClick={() => {
+                                    deleteUser(modal);
+                                }}>Agree</Button>
                             </DialogActions>
                         </Dialog>
                     </div>
