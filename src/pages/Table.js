@@ -26,11 +26,12 @@ const Table = () => {
 
     const handleClickOpen = (item) => {
         setOpen(true);
-        modalData(item.row.id)
+        modalData(item)
+
     };
 
     const deleteUser = (item) => {
-        axios.delete(`http://localhost:3000/posts/${item}`)
+        axios.delete(`http://localhost:3000/posts/${item.row.id}`)
             .then(response => {
                 alert('User deleted')
             })
